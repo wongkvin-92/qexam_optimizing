@@ -97,4 +97,8 @@ public class Preference {
         return preferenceId;
     }
     
+    public String toString(){
+        return getStudentId() + "," + getWeekDay() +","+ isAllowed()+","+ getPenalty();
+    }
+    
 }
