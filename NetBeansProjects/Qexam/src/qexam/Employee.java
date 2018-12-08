@@ -13,40 +13,23 @@ public class Employee {
 
 
     private int ID;
-    private int[] dayNoWork = {1,2,3,4,5,6,7,8,9,10,11,12,13,14};
-    private boolean Allowed;
-    private int Penalty;
+    private int[] daysWorked = {};
 
 	public Employee()
 	{
 		//this(0,[0][0],false, 0);
 	}
 	
-	public Employee(int ID, int[] dayNoWork, boolean Allowed, int Penalty )
+	public Employee(int ID, int[] daysWorked )
 	{
-		setID(ID);
-                setDayNoWork(dayNoWork);
-                setAllowed(Allowed);
-                setPenalty(Penalty);
-                
+            setID(ID);
+            setDaysWorked(daysWorked);
 	}
-    /**
-     * @return the dayNoWork
-     */
-    public int[] getDayNoWork() {
-        return dayNoWork;
-    }
 
-    /**
-     * @param dayNoWork the dayNoWork to set
-     */
-    public void setDayNoWork(int[] dayNoWork) {
-        this.dayNoWork = dayNoWork;
-    }
     /**
      * @return the ID
      */
-    public Integer getID() {
+    public int getID() {
         return ID;
     }
 
@@ -58,30 +41,16 @@ public class Employee {
     }
 
     /**
-     * @return the Allowed
+     * @return the daysWorked
      */
-    public Boolean getAllowed() {
-        return Allowed;
+    public int[] getDaysWorked() {
+        return daysWorked;
     }
 
     /**
-     * @param Allowed the Allowed to set
+     * @param daysWorked the daysWorked to set
      */
-    public void setAllowed(boolean Allowed) {
-        this.Allowed = Allowed;
-    }
-
-    /**
-     * @return the Penalty
-     */
-    public Integer getPenalty() {
-        return Penalty;
-    }
-
-    /**
-     * @param Penalty the Penalty to set
-     */
-    public void setPenalty(int Penalty) {
-        this.Penalty = Penalty;
+    public void setDaysWorked(int[] daysWorked) {
+        this.daysWorked = daysWorked;
     }
 }
