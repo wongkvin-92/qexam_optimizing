@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package qexam;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 /**
  *
  * @author wKvin
@@ -12,7 +14,7 @@ import java.util.HashMap;
 public class QuintiqApp {
     private HashMap<Integer, Employee> employees;
     private HashMap<Integer, Preference> preferences;
-    
+    private ScheduleContainer schedule;
     public QuintiqApp(){
         setEmployees(new HashMap<>());
         setPreferences(new HashMap<>());
@@ -24,6 +26,19 @@ public class QuintiqApp {
     
     public void  setEmployees(HashMap<Integer, Employee> employees){
         this.employees = employees;
+    }
+    
+    public ArrayList<Employee>getRecommendedEmployees(){
+        ArrayList<Employee> l= (ArrayList<Employee>) employees.values()
+                .stream()
+                .filter(e -> e.getDaysWorked() < 9)
+                .collect(Collectors.toList());
+        
+        l.sort((lhs, rhs) -> 
+                Integer.compare(lhs.getDaysWorked(), rhs.getDaysWorked()) );
+        
+        return l;
+        
     }
     
     public HashMap<Integer,Preference> getPreferences(){
