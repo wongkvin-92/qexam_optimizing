@@ -11,18 +11,18 @@ package qexam;
  */
 public class Preference {
     private int id;
-    private int [] weekDay;
+    private String weekDay;
     private boolean allowed;
-    private int pelnaty;
+    private int penalty;
     
     public Preference(){
     
     }
-    public Preference(int id, int [] weekDay, boolean allowed, int pelnaty){
+    public Preference(int id, String weekDay, boolean allowed, int pelnaty){
         setId(id);
         setWeekDay(weekDay);
         setAllowed(allowed);
-        setPelnaty(pelnaty);
+        setPenalty(penalty);
     }
     /**
      * @return the id
@@ -41,14 +41,14 @@ public class Preference {
     /**
      * @return the weekDay
      */
-    public int[] getWeekDay() {
+    public String getWeekDay() {
         return weekDay;
     }
 
     /**
      * @param weekDay the weekDay to set
      */
-    public void setWeekDay(int[] weekDay) {
+    public void setWeekDay(String weekDay) {
         this.weekDay = weekDay;
     }
 
@@ -67,17 +67,17 @@ public class Preference {
     }
 
     /**
-     * @return the pelnaty
+     * @return the penalty
      */
-    public int getPelnaty() {
-        return pelnaty;
+    public int getPenalty() {
+        return penalty;
     }
 
     /**
-     * @param pelnaty the pelnaty to set
+     * @param pelnaty the penalty to set
      */
-    public void setPelnaty(int pelnaty) {
-        this.pelnaty = pelnaty;
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
     }
     
 }
