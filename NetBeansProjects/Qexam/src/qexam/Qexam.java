@@ -5,7 +5,10 @@
  */
 package qexam;
 
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  *
@@ -13,13 +16,27 @@ import java.util.Scanner;
  */
 public class Qexam {
     static Scanner qq = new Scanner(System.in);
+    private static QuintiqApp qapp = new QuintiqApp();;
+    
+    public static void preload(){
+        qapp.createEmployee("emp A");
+        qapp.createEmployee("emp B");
+        qapp.createEmployee("emp C");
+        qapp.createEmployee("emp D");
+        qapp.createEmployee("emp E");
+        
+        qapp.createPreference(1, "1", false, 10);
+        qapp.createPreference(1, "6", true, 5);
+        qapp.createPreference(1, "*", true, 0);        
+    }
     
     /**
      * Display the main menu
      * @param args the command line arguments
      */
-    public static void main(String[] args) {        
-        boolean done = false;
+    public static void main(String[] args) {     
+        boolean  done = false;
+        preload();
         do
         {
             int response = doMenu();
@@ -27,7 +44,7 @@ public class Qexam {
             {
                 case 1: addStaff(); break;//
                 case 2: preferenceMenu(); break;
-                case 3: assignEmployee(); break;                
+                case 3: assignEmployee(); break;               
                 case 4: viewAssignments(); break;                               
                 case 5: autoPlanned(); break;
                 case 0: done = true; break;
@@ -35,6 +52,12 @@ public class Qexam {
             }
             System.out.println(); // skip a blank line
         } while (!done);
+    }
+    
+    public static String staffList(){
+        return qapp.getEmployees().values().stream()
+                .map(e -> "\t" + e.toString() + "\n")
+                .reduce("", String::concat);
     }
     
     /**
@@ -56,6 +79,8 @@ public class Qexam {
     }
     
     public static int doPreferenceMenu(){
+        System.out.println("======= Current Preference ===========\n"+preferenceString());
+        System.out.println("========== Preference menu =========");
         System.out.println("1. Add Preference");
         System.out.println("2. Delete Preference");  
         System.out.println("0. Back");
@@ -71,6 +96,8 @@ public class Qexam {
     public static int doMenu()
     {
         System.out.println("The Magic of Planning and Scheduling in the Logistic World");
+        System.out.println("Staff List\n "+ staffList());        
+        System.out.println("---------- Menu ----------");
         System.out.println("1. Add Staff");//done
         System.out.println("2. Configure Preference");
         System.out.println("3. Assign Employee to day");
@@ -87,26 +114,32 @@ public class Qexam {
         String name;
         System.out.println("Enter name");
         name = qq.next();
-        Employee employee = new Employee(name);
+        
+        Employee e = qapp.createEmployee(name);
         System.out.println("Employee created successfully");
-        System.out.println(employee);
+        System.out.println(e);
+        
+        
     }
        
     public static void addPreference()
     {
         System.out.println("Enter student id: ");
-        String studentID = qq.next();
+        int studentID = qq.nextInt();
         System.out.println("Enter day[1-14 or *]:");
         String dayStr = qq.next();
         System.out.println("Is student allowed to work on this day? (y/n):");
         String yesOrNo = qq.next();
         System.out.println("Enter penalty: ");
-        double penalty = qq.nextDouble();
+        int penalty = qq.nextInt();
         
+        boolean allowed = yesOrNo.toLowerCase().compareTo("yes") ==0 
+                || yesOrNo.toLowerCase().compareTo("y")==0;
         
+        Preference p = qapp.createPreference(studentID, dayStr, allowed, penalty);
     }
     
-        public static void autoPlanned()
+    public static void autoPlanned()
     {
         System.out.println("Not implemented yet");
     }
@@ -120,15 +153,31 @@ public class Qexam {
     }
 
     private static void assignEmployee() {
-        System.out.println("Not Implemented yet");
+        System.out.print("Enter an Employee ID:");
+        int empID = qq.nextInt();
+        System.out.print("Enter a date [1-14]:");
+        int day = qq.nextInt();
+        
+        //qapp.assignEmployee(empID, day);
     }
 
     private static void viewAssignments() {
-        System.out.println("Not implemented yet");
+        //qapp.getSchedule();
     }
 
     private static void deletePreference() {
-        System.out.println("Not implemented yet");
+        System.out.println("Enter preference #:");
+        int preferenceId = qq.nextInt();
+        qapp.deletePreference(preferenceId);
+    }
+
+    private static String preferenceString() {
+        Map<Integer, Preference> preferenceMap = qapp.getPreferences();
+        return qapp.getPreferences()
+                .keySet()
+                .stream()
+                .map(k ->  k +" -> "+ preferenceMap.get(k).toString() + "\n ")
+                .reduce("", String::concat);        
     }
 
 }
