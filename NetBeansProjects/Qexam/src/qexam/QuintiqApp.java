@@ -90,4 +90,9 @@ public class QuintiqApp {
     public void deletePreference(int id){
         preferences.remove(id);
     }
+    
+        public ArrayList<Integer> getRecommendationDays(Employee e){
+        return new ArrayList<>();
+    }
+    
 }

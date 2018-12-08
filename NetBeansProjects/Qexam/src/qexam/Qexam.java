@@ -64,7 +64,7 @@ public class Qexam {
      * Display the preference menu
      */
     public static void preferenceMenu(){
-        boolean done=false;;
+        boolean done=false;
         do{
             int response = doPreferenceMenu();
             switch(response){
@@ -164,7 +164,14 @@ public class Qexam {
         System.out.print("Enter an Employee ID:");
         int empID = qq.nextInt();
         
+        Employee emp = qapp.getEmployees().get(empID);
+        
         // 2 - recommend a list of date based from the selected employee
+        String dayList = qapp.getRecommendationDays(emp)
+                .stream()
+                .map(e -> "\t"+ e +"\n")
+                .reduce("",String::concat);
+        System.out.print("List of recommended days for selected employee: \n" + dayList);
         System.out.print("Enter a date [1-14]:");
         int day = qq.nextInt();
         
