@@ -40,6 +40,7 @@ public class QuintiqApp {
         return l;
         
     }
+        
     
     public HashMap<Integer,Preference> getPreferences(){
         return preferences;
@@ -47,6 +48,14 @@ public class QuintiqApp {
     
     public void setPreferences(HashMap<Integer,Preference> preferences){
         this.preferences = preferences;
+    }
+    
+    public void assignEmployee(Employee employee, int day){
+        schedule.addSchedule(employee, day);
+    }
+    
+    public void removeEmployee(Employee e, int day){
+        schedule.removeSchedule(e, day);
     }
     
     public Employee createEmployee(String name){
