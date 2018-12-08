@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package qexam;
+import java.util.ArrayList;
 import java.util.HashMap;
 /**
  *
@@ -13,13 +14,16 @@ public class ScheduleContainer {
     private int slotPerDay = 3;
     private int maxDays = 14;
     private int maxWorkDays = 9;
-    private HashMap <Integer, Integer> scheduleItem;
+    private HashMap <Integer, ArrayList<Integer> > scheduleItem;
+    private HashMap <Integer, Preference> preferenceList;
 
-    public ScheduleContainer(int slotPerday, int maxDays, int maxWorkDays){
-        setSlotPerDay(slotPerday);
-        setMaxDays(maxDays);
-        setMaxWorkDays(maxWorkDays);
+    public ScheduleContainer(HashMap<Integer, Preference> preferenceList){
         setScheduleItem(new HashMap<>());
+        this.preferenceList = preferenceList;
+    }
+    
+    public boolean addSchedule(Employee e, int day){
+        
     }
     
     private int getSlotPerDay(){
