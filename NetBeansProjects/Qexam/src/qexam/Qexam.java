@@ -153,8 +153,18 @@ public class Qexam {
     }
 
     private static void assignEmployee() {
+
+        // 1 - display a list of employee recommendation (dooe)
+        String employeeList = qapp.getRecommendedEmployees()
+                .stream()
+                .map(e -> "\t"+e.toString()+"\n" )
+                .reduce("", String::concat);
+        System.out.println("List of recommended employees: \n"+ employeeList);
+                
         System.out.print("Enter an Employee ID:");
         int empID = qq.nextInt();
+        
+        // 2 - recommend a list of date based from the selected employee
         System.out.print("Enter a date [1-14]:");
         int day = qq.nextInt();
         
