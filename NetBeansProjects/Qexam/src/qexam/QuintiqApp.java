@@ -6,6 +6,7 @@
 package qexam;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.stream.Collectors;
 /**
  *
@@ -15,10 +16,12 @@ public class QuintiqApp {
     private HashMap<Integer, Employee> employees;
     private HashMap<Integer, Preference> preferences;
     private ScheduleContainer schedule;
+    
     public QuintiqApp(){
+        schedule = new ScheduleContainer(preferences);
         setEmployees(new HashMap<>());
         setPreferences(new HashMap<>());
-}
+    }
     
     public HashMap<Integer, Employee> getEmployees(){
         return employees;
@@ -50,8 +53,13 @@ public class QuintiqApp {
         this.preferences = preferences;
     }
     
-    public void assignEmployee(Employee employee, int day){
-        schedule.addSchedule(employee, day);
+    public Employee assignEmployee(Employee employee, int day){        
+        if (schedule.addSchedule(employee, day) ){  
+            employee.setDaysWorked(employee.getDaysWorked()+1);
+            return employee;
+        }else{
+            return null;
+        }
     }
     
     public void removeEmployee(Employee e, int day){
@@ -59,7 +67,7 @@ public class QuintiqApp {
     }
     
     public Employee createEmployee(String name){
-        Employee emp = new Employee(name);
+        Employee emp = new Employee(name);        
         employees.put(emp.getID(), emp);
         return emp;
     }
@@ -91,8 +99,61 @@ public class QuintiqApp {
         preferences.remove(id);
     }
     
-        public ArrayList<Integer> getRecommendationDays(Employee e){
-        return new ArrayList<>();
+    /**
+    private ArrayList<Preference> getPreferenceForDay(Employee emp, int d){
+        return (ArrayList<Preference>) preferences.values()
+                .stream()
+                .filter(e -> e.getWeekDay().equals(String.valueOf(d)) )
+                .collect(Collectors.toList());        
+    }**/
+    private ArrayList<Integer> daysEmployeeCannotWork(Employee emp){
+        return (ArrayList<Integer> ) preferences.values()
+                .stream()
+                .filter(p -> 
+                                (!p.getWeekDay().equals("*") ||
+                                p.isAllowed() == false) &&
+                                p.getStudentId() == emp.getID()                                         
+                )
+                                
+                .map(e -> Integer.valueOf(e.getWeekDay()) )
+                .collect(Collectors.toList())
+                ;              
     }
+    
+    public ArrayList<Integer> getRecommendationDays(Employee e){        
+        ArrayList<Integer> list =  new ArrayList<>();
+        ArrayList<Integer> daysStudentCannotWork = daysEmployeeCannotWork(e);
+        
+                    
+        //HashMap <Integer, ArrayList<Integer> > scheduleList = schedule
+       //                                                 .getSchedule(); 
+        
+        //Set<Integer> keys = scheduleList.keySet();
+        
+        for(int i=1; i <= 14; i++){
+            if(daysStudentCannotWork.contains(i))
+                continue;           
+            
+            //check whether employee already has a task for that day
+            ArrayList<Integer> al = schedule.getSchedule()
+                    .get(i);
+            
+            if(al.contains(e.getID()))
+                continue;
+            
+            //if there is no slot then skip the day
+            if(al.size()>= schedule.getSlotPerDay())
+                continue;
+                
+            
+            list.add(i);            
+        }
+        
+        return list;
+    }
+    
+    public ScheduleContainer getScheduleManager(){
+        return schedule;
+    }        
     
 }

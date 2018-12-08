@@ -5,8 +5,12 @@
  */
 package qexam;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 import jdk.nashorn.internal.codegen.CompilerConstants;
 
@@ -175,10 +179,21 @@ public class Qexam {
         System.out.print("Enter a date [1-14]:");
         int day = qq.nextInt();
         
-        //qapp.assignEmployee(empID, day);
+        qapp.assignEmployee(emp, day);
     }
 
     private static void viewAssignments() {
+        HashMap <Integer, ArrayList<Integer> > scheduleList =  qapp.getScheduleManager()
+                .getSchedule();         
+        Set<Integer> keys = scheduleList.keySet();
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for(Integer k: keys){
+            ArrayList<Integer> dailySchedule = scheduleList.get(k);
+            sb.append("\t  Day :" +k +" -> "+ dailySchedule + "\n");
+        }
+        System.out.println("Daily schedule===== \n "+sb.toString());
         //qapp.getSchedule();
     }
 
