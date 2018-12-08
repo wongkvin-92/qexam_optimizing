@@ -16,6 +16,10 @@ public class Employee {
     private int daysWorked;
     private String name;
     
+    public static void resetAutoIncrement(){
+        last_id = 0;
+    }
+    
     public Employee(String name)
     {
         this(name, last_id+1, 0);
@@ -24,6 +28,7 @@ public class Employee {
 
     public Employee(String name, int ID, int daysWorked )
     {
+        setName(name);
         setID(ID);
         setDaysWorked(daysWorked);
     }
@@ -39,8 +44,8 @@ public class Employee {
      * @param ID the ID to set
      */
     public void setID(int ID) {
-        this.ID = ID+1;
-        this.last_id = ID+1;
+        this.ID = ID;
+        this.last_id = this.ID;
     }
 
     /**
@@ -56,4 +61,23 @@ public class Employee {
     public void setDaysWorked(int daysWorked) {
         this.daysWorked = daysWorked;
     }
+    public String toString()
+    {
+            return getID() + ","+ getName() + ","   + getDaysWorked();
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+        
 }
