@@ -10,32 +10,42 @@ package qexam;
  * @author wKvin
  */
 public class Preference {
-    private int id;
+    
+    private static int lastKey = 0;
+    private int preferenceId=0;
+    private int studentID;
     private String weekDay;
     private boolean allowed;
     private int penalty;
     
-    public Preference(){
-    
-    }
-    public Preference(int id, String weekDay, boolean allowed, int pelnaty){
-        setId(id);
+
+    public Preference(int id, String weekDay, boolean allowed, int penalty){
+        preferenceId = lastKey + 1;
+        lastKey = preferenceId;
+        
+        setStudentId(id);
         setWeekDay(weekDay);
         setAllowed(allowed);
         setPenalty(penalty);
     }
+    
+    public static void resetPreferenceId()
+    {
+        lastKey = 0;
+    }
+    
     /**
-     * @return the id
+     * @return the studentID
      */
-    public int getId() {
-        return id;
+    public int getStudentId() {
+        return studentID;
     }
 
     /**
-     * @param id the id to set
+     * @param id the studentID to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setStudentId(int id) {
+        this.studentID = id;
     }
 
     /**
@@ -78,6 +88,13 @@ public class Preference {
      */
     public void setPenalty(int penalty) {
         this.penalty = penalty;
+    }
+
+    /**
+     * @return the preferenceId
+     */
+    public int getPreferenceId() {
+        return preferenceId;
     }
     
 }
