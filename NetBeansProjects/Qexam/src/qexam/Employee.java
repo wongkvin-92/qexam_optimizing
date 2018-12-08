@@ -10,21 +10,23 @@ package qexam;
  * @author wKvin
  */
 public class Employee {
-
-
+    private static int last_id = 0;
+    
     private int ID;
-    private int[] daysWorked = {};
+    private int daysWorked;
+    private String name;
+    
+    public Employee(String name)
+    {
+        this(name, last_id+1, 0);
+            //this(0,[0][0],false, 0);
+    }
 
-	public Employee()
-	{
-		//this(0,[0][0],false, 0);
-	}
-	
-	public Employee(int ID, int[] daysWorked )
-	{
-            setID(ID);
-            setDaysWorked(daysWorked);
-	}
+    public Employee(String name, int ID, int daysWorked )
+    {
+        setID(ID);
+        setDaysWorked(daysWorked);
+    }
 
     /**
      * @return the ID
@@ -38,19 +40,20 @@ public class Employee {
      */
     public void setID(int ID) {
         this.ID = ID+1;
+        this.last_id = ID+1;
     }
 
     /**
      * @return the daysWorked
      */
-    public int[] getDaysWorked() {
+    public int getDaysWorked() {
         return daysWorked;
     }
 
     /**
      * @param daysWorked the daysWorked to set
      */
-    public void setDaysWorked(int[] daysWorked) {
+    public void setDaysWorked(int daysWorked) {
         this.daysWorked = daysWorked;
     }
 }
