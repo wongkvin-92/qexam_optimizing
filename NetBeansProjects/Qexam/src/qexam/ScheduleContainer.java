@@ -6,28 +6,92 @@
 package qexam;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 /**
  *
  * @author wKvin
  */
 public class ScheduleContainer {
     private int slotPerDay = 3;
+    private int maxStudents = 5;
     private int maxDays = 14;
     private int maxWorkDays = 9;
+    
     private HashMap <Integer, ArrayList<Integer> > schedule;
     private HashMap <Integer, Preference> preferenceList;
+    private HashMap<Integer, Employee> employees;
 
     public ScheduleContainer(){
-        this(new HashMap<Integer, Preference>());
+        this(new HashMap<Integer, Preference>(), new HashMap<Integer, Employee>());
+    }
+  
+    
+    public ScheduleContainer(HashMap<Integer, Preference> preferenceList,
+                             HashMap<Integer, Employee> employees
+            ){
+        setSchedule(new HashMap<>());        
+        this.employees = employees;        
+        for(int i=1; i<= maxDays; i++){
+            this.schedule.put(i, new ArrayList<>());
+        }        
+        this.preferenceList = preferenceList;
     }
     
+      
+    /**
+     * Return the sum of all the preference
+     * @return 
+     */
+    public int totalPenalty(){
+        return schedule.entrySet().stream()
+                .map( (el) -> {
+                    Integer day = el.getKey();
+                    ArrayList<Integer> agendaItems = el.getValue();                    
+                    //Preference pref = preferenceList.get(day);
+                    
+                    //filter preference by day
+                    // We use Supplier<Stream> so that we can reuse the stream 
+                      //again for each map iteration
+                    Supplier<Stream<Preference>> prefStreamSupplier = () ->
+                                    preferenceList.values().stream()
+                                .filter(e -> e.getWeekDay().equals(String.valueOf(day)) );
+                            
+                    return agendaItems.stream()
+                            .map(studentId -> 
+                                prefStreamSupplier.get().filter( e ->  e.getStudentId() == studentId )
+                                        .map(e -> e.getPenalty())
+                                        .reduce(0, Integer::sum)                                                                        
+                            ).reduce(0, Integer::sum);                            
+                }).reduce(0, (a,b)->a+b);
+    }     
+      
     
-    public ScheduleContainer(HashMap<Integer, Preference> preferenceList){
-        setSchedule(new HashMap<>());        
-        for(int i=1; i<= maxDays; i++){
-            this.schedule.put(i, new ArrayList<Integer>());
-        }
-        this.preferenceList = preferenceList;
+    
+    /**
+     * Calculate the error score, for a given schedule.
+     * If the score is higher, then it means the schedule is 
+     * non-optimal.
+     * @return 
+     */
+    public double calcScore(){
+        Double score1 = 0.0;
+        
+        double dt1 = 1.0/ (slotPerDay*maxDays);
+        
+        //If students work more than 9 days than increase the score by dt1        
+        //
+        Stream s = schedule.values().parallelStream().
+            map( agendaItems -> {            
+                return agendaItems.parallelStream()
+                        .map( studentId -> 
+                                (employees.get(studentId).getDaysWorked() > maxWorkDays)?1.0:0.0                    
+                            );                
+            });
+        
+        //double score2 = 0.0;
+        return score1;
     }
     
     private ArrayList<Integer> getSlots(int day){

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+
 /**
  *
  * @author wKvin
@@ -18,9 +20,9 @@ public class QuintiqApp {
     private ScheduleContainer schedule;
     
     public QuintiqApp(){
-        schedule = new ScheduleContainer(preferences);
         setEmployees(new HashMap<>());
         setPreferences(new HashMap<>());
+        schedule = new ScheduleContainer(preferences, employees);                
     }
     
     public HashMap<Integer, Employee> getEmployees(){
@@ -128,8 +130,7 @@ public class QuintiqApp {
         //HashMap <Integer, ArrayList<Integer> > scheduleList = schedule
        //                                                 .getSchedule(); 
         
-        //Set<Integer> keys = scheduleList.keySet();
-        
+        //Set<Integer> keys = scheduleList.keySet();        
         for(int i=1; i <= 14; i++){
             if(daysStudentCannotWork.contains(i))
                 continue;           
@@ -144,8 +145,7 @@ public class QuintiqApp {
             //if there is no slot then skip the day
             if(al.size()>= schedule.getSlotPerDay())
                 continue;
-                
-            
+                            
             list.add(i);            
         }
         
@@ -155,5 +155,13 @@ public class QuintiqApp {
     public ScheduleContainer getScheduleManager(){
         return schedule;
     }        
+
+    public double getScheduleScore() {
+        return schedule.calcScore();
+    }
+
+    public int getPenalty() {
+        return schedule.totalPenalty();
+    }
     
 }

@@ -100,7 +100,9 @@ public class Qexam {
     public static int doMenu()
     {
         System.out.println("The Magic of Planning and Scheduling in the Logistic World");
-        System.out.println("Staff List\n "+ staffList());        
+        System.out.println("Staff List\n "+ staffList());    
+        System.out.println("Score = "+ qapp.getScheduleScore());
+        System.out.println("Penalty = "+ qapp.getPenalty());
         System.out.println("---------- Menu ----------");
         System.out.println("1. Add Staff");//done
         System.out.println("2. Configure Preference");
